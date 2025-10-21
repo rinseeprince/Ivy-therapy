@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Brain, LogOut } from 'lucide-react'
+import { Brain, LogOut, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/auth/auth-context'
 import { useRouter } from 'next/navigation'
@@ -36,6 +36,12 @@ export function SessionDetailHeader() {
           </Link>
           <Link href="/session/new">
             <Button style={{ backgroundColor: '#2a1a17', color: 'white' }}>New Session</Button>
+          </Link>
+          <Link href="/settings/manage-data">
+            <Button variant="ghost" className="text-cocoa-900">
+              <Settings className="h-4 w-4 mr-2" />
+              Manage Data
+            </Button>
           </Link>
           <Button
             onClick={handleLogout}
