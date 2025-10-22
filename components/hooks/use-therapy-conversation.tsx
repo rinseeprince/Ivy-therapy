@@ -43,7 +43,8 @@ export function useTherapyConversation({
     },
     onError: (error) => {
       console.error('[TherapyConversation] Error:', error)
-      onError?.(error.message || 'An error occurred during the conversation')
+      const errorMessage = typeof error === 'string' ? error : (error as Error).message || 'An error occurred during the conversation'
+      onError?.(errorMessage)
     },
     onStatusChange: (status) => {
       console.log('[TherapyConversation] Status changed:', status)
@@ -79,7 +80,8 @@ export function useTherapyConversation({
       console.log('[TherapyConversation] Started with ID:', newConversationId)
     } catch (error) {
       console.error('[TherapyConversation] Failed to start:', error)
-      onError?.(`Failed to start conversation: ${error.message}`)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      onError?.(`Failed to start conversation: ${errorMessage}`)
     } finally {
       setIsConnecting(false)
     }

@@ -88,7 +88,7 @@ export default async function SessionDetailPage({ params }: { params: Promise<{ 
                     <h2 className="text-xl font-semibold">Key Topics Discussed</h2>
                   </div>
                   <ul className="space-y-2">
-                    {summary.key_topics.map((topic, index) => (
+                    {summary.key_topics.map((topic: string, index: number) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
                         <span className="leading-relaxed text-muted-foreground">{topic}</span>
@@ -106,7 +106,7 @@ export default async function SessionDetailPage({ params }: { params: Promise<{ 
                     <h2 className="text-xl font-semibold">Next Steps</h2>
                   </div>
                   <ul className="space-y-3">
-                    {summary.next_steps.map((step, index) => (
+                    {summary.next_steps.map((step: string, index: number) => (
                       <li key={index} className="flex items-start gap-3">
                         <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
                           {index + 1}

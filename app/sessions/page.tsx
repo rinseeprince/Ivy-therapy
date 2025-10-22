@@ -104,7 +104,7 @@ export default async function SessionsPage() {
 
                       {session.session_summaries?.[0]?.key_topics && (
                         <div className="flex flex-wrap gap-2">
-                          {session.session_summaries[0].key_topics.slice(0, 3).map((topic, index) => (
+                          {session.session_summaries[0].key_topics.slice(0, 3).map((topic: string, index: number) => (
                             <span 
                               key={index} 
                               className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"

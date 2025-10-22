@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     try {
       await upsertUserSettings(user.id, {
         has_active_consent: false,
-        consent_version: null,
+        consent_version: undefined,
       });
     } catch (err) {
       console.error('Failed to revoke consent:', err);

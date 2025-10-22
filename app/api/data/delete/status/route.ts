@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       // No deletion requests found
       if (error.code === 'PGRST116') {
         return NextResponse.json(
-          { ok: true, request: null } as DeleteAccountStatusResponse,
+          { ok: true, request: undefined } as DeleteAccountStatusResponse,
           { status: 200 }
         );
       }

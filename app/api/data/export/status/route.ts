@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       // No exports found
       if (error.code === 'PGRST116') {
         return NextResponse.json(
-          { ok: true, export: null } as DataExportStatusResponse,
+          { ok: true, export: undefined } as DataExportStatusResponse,
           { status: 200 }
         );
       }

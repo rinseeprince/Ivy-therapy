@@ -210,7 +210,7 @@ export async function getUserAuditLogs(
   userId: string,
   limit: number = 100
 ) {
-  const supabase = await getSupabaseServerClient();
+  const supabase = await getSupabaseServiceClient();
 
   const { data, error } = await supabase
     .from('privacy_audit')
