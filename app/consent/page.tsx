@@ -72,8 +72,8 @@ export default function ConsentPage() {
         throw new Error(result.error || 'Failed to accept consent');
       }
 
-      // Redirect to sessions or home
-      router.push('/sessions');
+      // Redirect to dashboard
+      router.push('/dashboard');
     } catch (err) {
       console.error('Consent submission error:', err);
       setError(err instanceof Error ? err.message : 'Failed to submit consent');

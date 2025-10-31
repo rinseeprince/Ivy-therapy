@@ -1,0 +1,10 @@
+// Dashboard Components
+export { DashboardSidebar } from './DashboardSidebar'
+export { StatsCard } from './StatsCard'
+export { MoodInsightsCard } from './MoodInsightsCard'
+export { RecentSessions } from './RecentSessions'
+export { QuickActions } from './QuickActions'
+export { DidYouKnowCard } from './DidYouKnowCard'
+export { DarkModeToggle } from './DarkModeToggle'
+export { DashboardSkeleton } from './DashboardSkeleton'
+export { DashboardPageClient } from './DashboardPageClient'
