@@ -210,14 +210,10 @@ export function StartSessionClient({ user }: StartSessionClientProps) {
         method: "POST",
       })
 
-      // Reset local state
-      setIsSessionActive(false)
-      setSessionId(null)
-      setSessionStartTime(null)
-      setElapsedTime(0)
-      setSessionState("ended")
+      // Keep the "ending" state until redirect completes
+      // Don't reset isSessionActive to false to avoid showing the landing page
 
-      // Redirect to session summary page
+      // Redirect to session summary page (state will be reset when component unmounts)
       router.push(`/sessions/${sessionId}`)
     } catch (error) {
       console.error("[StartSessionClient] Error ending session:", error)
