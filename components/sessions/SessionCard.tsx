@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Calendar, Clock, MessageCircle, ArrowRight } from 'lucide-react'
+import { Calendar, Clock, MessageCircle, ArrowRight, Mic } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -11,6 +11,7 @@ import Link from 'next/link'
 interface SessionCardProps {
   session: {
     id: string
+    session_type: 'voice' | 'text'
     started_at: string
     duration_minutes?: number
     status: 'completed' | 'in_progress' | 'cancelled'
@@ -68,6 +69,29 @@ export function SessionCard({ session, index }: SessionCardProps) {
           <div className="flex-1 space-y-3">
             {/* Date, duration, and status */}
             <div className="flex items-center gap-4 flex-wrap">
+              {/* Session Type Badge */}
+              <Badge
+                variant="outline"
+                className={cn(
+                  "flex items-center gap-1",
+                  session.session_type === 'voice'
+                    ? "bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300"
+                    : "bg-teal-50 dark:bg-teal-950/30 border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300"
+                )}
+              >
+                {session.session_type === 'voice' ? (
+                  <>
+                    <Mic className="w-3 h-3" />
+                    Voice
+                  </>
+                ) : (
+                  <>
+                    <MessageCircle className="w-3 h-3" />
+                    Text
+                  </>
+                )}
+              </Badge>
+
               <div className="flex items-center gap-2 text-sm text-cocoa-600 dark:text-cream-200">
                 <Calendar className="w-4 h-4" />
                 <span>
@@ -84,13 +108,6 @@ export function SessionCard({ session, index }: SessionCardProps) {
                 <div className="flex items-center gap-2 text-sm text-cocoa-600 dark:text-cream-200">
                   <Clock className="w-4 h-4" />
                   <span>{session.duration_minutes} minutes</span>
-                </div>
-              )}
-
-              {messageCount > 0 && (
-                <div className="flex items-center gap-2 text-sm text-cocoa-600 dark:text-cream-200">
-                  <MessageCircle className="w-4 h-4" />
-                  <span>{messageCount} messages</span>
                 </div>
               )}
             </div>

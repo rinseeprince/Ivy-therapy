@@ -8,6 +8,7 @@ import {
   Home,
   Calendar,
   PlayCircle,
+  MessageSquare,
   BookOpen,
   TrendingUp,
   Library,
@@ -20,6 +21,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  Mic,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -35,7 +37,8 @@ interface NavItem {
 const navigation: NavItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: Home, section: 'core' },
   { name: 'My Sessions', href: '/sessions', icon: Calendar, section: 'core' },
-  { name: 'Start Session', href: '/session/new', icon: PlayCircle, section: 'core' },
+  { name: 'Start Voice Session', href: '/session/new', icon: Mic, section: 'core' },
+  { name: 'Start Chat Session', href: '/text-session/new', icon: MessageSquare, section: 'core' },
   { name: 'Journal Entries', href: '/journal', icon: BookOpen, section: 'core' },
   { name: 'Progress Tracking', href: '/progress', icon: TrendingUp, section: 'core' },
   { name: 'Resources', href: '/resources', icon: Library, section: 'core' },
@@ -78,7 +81,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
       .map((item) => {
         const isActive = pathname === item.href
         const Icon = item.icon
-        const isStartSession = item.href === '/session/new'
+        const isStartSession = item.href === '/session/new' || item.href === '/text-session/new'
 
         return (
           <Link key={item.name} href={item.href}>

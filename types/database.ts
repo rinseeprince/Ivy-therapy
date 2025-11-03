@@ -5,6 +5,9 @@
 
 export type ExportStatus = 'queued' | 'processing' | 'ready' | 'failed';
 export type DeleteStatus = 'queued' | 'processing' | 'completed' | 'failed' | 'canceled';
+export type SessionType = 'voice' | 'text';
+export type SubscriptionTier = 'free' | 'premium';
+export type SessionStatus = 'in_progress' | 'completed' | 'cancelled';
 
 export interface UserConsent {
   id: string;
@@ -29,8 +32,38 @@ export interface UserSettings {
   allow_data_export: boolean;
   pending_deletion: boolean;
   deletion_requested_at?: string | null;
+  subscription_tier: SubscriptionTier;
+  weekly_text_sessions_count: number;
+  last_session_reset_date: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface TherapySession {
+  id: string;
+  user_id: string;
+  session_type: SessionType;
+  started_at: string;
+  ended_at?: string | null;
+  duration_minutes?: number | null;
+  status: SessionStatus;
+  transcript: Array<{
+    role: 'user' | 'assistant';
+    content: string;
+    timestamp: string;
+  }>;
+  created_at: string;
+}
+
+export interface SessionSummary {
+  id: string;
+  session_id: string;
+  summary: string;
+  key_topics: string[];
+  next_steps: string[];
+  mood_assessment?: string | null;
+  therapist_notes?: string | null;
+  created_at: string;
 }
 
 export interface DataExport {
@@ -72,6 +105,16 @@ export type UserConsentInsert = Omit<UserConsent, 'id' | 'created_at'> & {
 export type UserSettingsInsert = Omit<UserSettings, 'created_at' | 'updated_at'> & {
   created_at?: string;
   updated_at?: string;
+};
+
+export type TherapySessionInsert = Omit<TherapySession, 'id' | 'created_at'> & {
+  id?: string;
+  created_at?: string;
+};
+
+export type SessionSummaryInsert = Omit<SessionSummary, 'id' | 'created_at'> & {
+  id?: string;
+  created_at?: string;
 };
 
 export type DataExportInsert = Omit<DataExport, 'id' | 'created_at' | 'updated_at'> & {
@@ -194,4 +237,47 @@ export interface UserDataExport {
       completed: boolean;
     }>;
   }>;
+}
+
+// Text session API types
+export interface TextSessionMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: string;
+}
+
+export interface CreateTextSessionResponse {
+  success: boolean;
+  sessionId?: string;
+  error?: string;
+}
+
+export interface SendMessageRequest {
+  message: string;
+}
+
+export interface SendMessageResponse {
+  success: boolean;
+  reply?: string;
+  error?: string;
+}
+
+export interface SessionUsageResponse {
+  success: boolean;
+  tier: SubscriptionTier;
+  sessionsUsed: number;
+  sessionsLimit: number | null; // null means unlimited
+  resetDate: string;
+  canStartSession: boolean;
+  daysUntilReset: number;
+  error?: string;
+}
+
+export interface CompleteSessionRequest {
+  durationMinutes: number;
+}
+
+export interface CompleteSessionResponse {
+  success: boolean;
+  error?: string;
 }

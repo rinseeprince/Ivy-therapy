@@ -14,6 +14,7 @@ import Link from 'next/link'
 
 interface Session {
   id: string
+  session_type: 'voice' | 'text'
   started_at: string
   duration_minutes?: number
   status: 'completed' | 'in_progress' | 'cancelled'
@@ -46,6 +47,7 @@ export function SessionsPageClient({
 }: SessionsPageClientProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
   const [sortBy, setSortBy] = useState('newest')
 
   // Filter and sort sessions
@@ -71,6 +73,11 @@ export function SessionsPageClient({
       filtered = filtered.filter((session) => session.status === statusFilter)
     }
 
+    // Type filter
+    if (typeFilter !== 'all') {
+      filtered = filtered.filter((session) => session.session_type === typeFilter)
+    }
+
     // Sort
     filtered.sort((a, b) => {
       switch (sortBy) {
@@ -88,7 +95,7 @@ export function SessionsPageClient({
     })
 
     return filtered
-  }, [sessions, searchQuery, statusFilter, sortBy])
+  }, [sessions, searchQuery, statusFilter, typeFilter, sortBy])
 
   const isEmpty = sessions.length === 0
   const hasNoResults = filteredSessions.length === 0 && !isEmpty
@@ -135,6 +142,7 @@ export function SessionsPageClient({
                 <SessionsFilter
                   onSearchChange={setSearchQuery}
                   onStatusChange={setStatusFilter}
+                  onTypeChange={setTypeFilter}
                   onSortChange={setSortBy}
                 />
               </motion.div>

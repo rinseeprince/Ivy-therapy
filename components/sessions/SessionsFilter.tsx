@@ -15,12 +15,14 @@ import {
 interface SessionsFilterProps {
   onSearchChange: (search: string) => void
   onStatusChange: (status: string) => void
+  onTypeChange: (type: string) => void
   onSortChange: (sort: string) => void
 }
 
 export function SessionsFilter({
   onSearchChange,
   onStatusChange,
+  onTypeChange,
   onSortChange,
 }: SessionsFilterProps) {
   const [search, setSearch] = useState('')
@@ -42,6 +44,19 @@ export function SessionsFilter({
           className="pl-10 bg-white dark:bg-cocoa-800 border-cocoa-200 focus:border-teal-400"
         />
       </div>
+
+      {/* Type Filter */}
+      <Select onValueChange={onTypeChange} defaultValue="all">
+        <SelectTrigger className="w-full sm:w-[180px] bg-white dark:bg-cocoa-800 border-cocoa-200">
+          <Filter className="w-4 h-4 mr-2" />
+          <SelectValue placeholder="Session type" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Types</SelectItem>
+          <SelectItem value="voice">Voice Sessions</SelectItem>
+          <SelectItem value="text">Text Sessions</SelectItem>
+        </SelectContent>
+      </Select>
 
       {/* Status Filter */}
       <Select onValueChange={onStatusChange} defaultValue="all">
