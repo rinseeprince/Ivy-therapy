@@ -274,7 +274,7 @@ export function StartSessionClient({ user }: StartSessionClientProps) {
   }
 
   return (
-    <div className="flex h-screen bg-cream-100 dark:bg-cocoa-900">
+    <div className="flex h-screen bg-cream-100 dark:bg-cocoa-900 relative">
       {/* Sidebar */}
       <DashboardSidebar user={user} />
 

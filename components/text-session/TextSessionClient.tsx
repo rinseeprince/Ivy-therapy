@@ -137,7 +137,7 @@ export function TextSessionClient({ user }: TextSessionClientProps) {
       activeSessionId = newSessionId
     }
 
-    await sendMessage(message, activeSessionId)
+    await sendMessage(message, activeSessionId ?? undefined)
     setMessage("")
   }
 
