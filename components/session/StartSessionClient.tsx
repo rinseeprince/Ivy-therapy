@@ -167,13 +167,28 @@ export function StartSessionClient({ user }: StartSessionClientProps) {
       setSessionStartTime(new Date())
       setIsSessionActive(true)
 
+      // Fetch comprehensive session history context for long-term memory
+      const contextResponse = await fetch("/api/sessions/build-context", {
+        method: "GET",
+      })
+
+      let sessionContext = ""
+      if (contextResponse.ok) {
+        const { contextPrompt, hasHistory, previousSessionsCount } = await contextResponse.json()
+        sessionContext = contextPrompt
+        console.log(
+          `[StartSessionClient] Loaded context: ${previousSessionsCount} previous sessions`
+        )
+      } else {
+        console.warn("[StartSessionClient] Failed to load session context, continuing without history")
+        sessionContext = `Starting therapy session with ID: ${newSessionId}. This is a confidential therapy session.`
+      }
+
       // Start ElevenLabs conversation
       await startConversation()
 
-      // Send initial context to the conversation
-      sendContextUpdate(
-        `Starting therapy session with ID: ${newSessionId}. This is a confidential therapy session.`
-      )
+      // Send comprehensive context including all previous session summaries
+      sendContextUpdate(sessionContext)
     } catch (error) {
       console.error("[StartSessionClient] Error starting session:", error)
       setConnectionError(

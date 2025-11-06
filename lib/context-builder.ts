@@ -16,7 +16,7 @@ export interface SessionContext {
 export async function buildSessionContext(userId: string): Promise<SessionContext> {
   const supabase = await getSupabaseServerClient()
 
-  // Fetch the last 3 completed sessions with summaries
+  // Fetch all completed sessions with summaries (capped at 100 for safety)
   const { data: sessions } = await supabase
     .from("therapy_sessions")
     .select(
@@ -35,7 +35,7 @@ export async function buildSessionContext(userId: string): Promise<SessionContex
     .eq("user_id", userId)
     .eq("status", "completed")
     .order("started_at", { ascending: false })
-    .limit(3)
+    .limit(100)
 
   if (!sessions || sessions.length === 0) {
     return {

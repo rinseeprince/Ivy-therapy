@@ -96,12 +96,9 @@ export async function POST(
       timestamp: new Date().toISOString()
     }
 
-    // Build context from previous sessions (only on first message)
-    let contextPrompt = ''
-    if (transcript.length === 0) {
-      const context = await buildSessionContext(user.id)
-      contextPrompt = context.contextPrompt
-    }
+    // Build context from previous sessions (on every message for perfect recall)
+    const context = await buildSessionContext(user.id)
+    const contextPrompt = context.contextPrompt
 
     // Prepare messages for OpenAI
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
@@ -131,7 +128,7 @@ export async function POST(
 
     // Get response from OpenAI with streaming
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-4o",
       messages,
       temperature: 0.7,
       max_tokens: 800,
