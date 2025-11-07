@@ -10,7 +10,7 @@ export const metadata = {
 export default async function NewJournalEntryPage({
   searchParams,
 }: {
-  searchParams: { sessionId?: string; prompt?: string };
+  searchParams: Promise<{ sessionId?: string; prompt?: string }>;
 }) {
   const supabase = await getSupabaseServerClient();
 
@@ -23,6 +23,8 @@ export default async function NewJournalEntryPage({
     redirect("/auth/login");
   }
 
+  const params = await searchParams;
+
   const userData = {
     name: user.user_metadata?.name || user.email?.split("@")[0] || "User",
     email: user.email || "",
@@ -31,8 +33,8 @@ export default async function NewJournalEntryPage({
 
   return (
     <NewJournalEntryClient
-      sessionId={searchParams.sessionId}
-      initialPrompt={searchParams.prompt}
+      sessionId={params.sessionId}
+      initialPrompt={params.prompt}
       user={userData}
     />
   );
