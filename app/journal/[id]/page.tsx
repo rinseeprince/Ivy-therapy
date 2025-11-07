@@ -10,7 +10,7 @@ export const metadata = {
 export default async function JournalEntryDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const supabase = await getSupabaseServerClient();
 
@@ -23,11 +23,13 @@ export default async function JournalEntryDetailPage({
     redirect("/auth/login");
   }
 
+  const { id } = await params;
+
   // Fetch journal entry
   const { data: entry, error } = await supabase
     .from("journal_entries")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .eq("user_id", user.id)
     .single();
 
