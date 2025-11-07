@@ -10,6 +10,8 @@ import { RecentSessions } from '@/components/dashboard/RecentSessions'
 import { QuickActions } from '@/components/dashboard/QuickActions'
 import { DidYouKnowCard } from '@/components/dashboard/DidYouKnowCard'
 import { DarkModeToggle } from '@/components/dashboard/DarkModeToggle'
+import { DailyCheckInCard } from '@/components/dashboard/DailyCheckInCard'
+import { CheckInReminderBanner } from '@/components/dashboard/CheckInReminderBanner'
 import Link from 'next/link'
 
 interface DashboardSession {
@@ -58,6 +60,9 @@ export function DashboardPageClient({
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto">
+        {/* Check-in Reminder Banner */}
+        <CheckInReminderBanner />
+
         <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
           {/* Header */}
           <motion.div
@@ -138,8 +143,15 @@ export function DashboardPageClient({
             />
           </div>
 
-          {/* Mood Insights Card */}
-          <MoodInsightsCard {...moodData} />
+          {/* Daily Check-In & Mood Insights */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1">
+              <DailyCheckInCard />
+            </div>
+            <div className="lg:col-span-2">
+              <MoodInsightsCard {...moodData} />
+            </div>
+          </div>
 
           {/* Quick Actions */}
           <QuickActions />

@@ -36,6 +36,7 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: Home, section: 'core' },
+  { name: 'Daily Check-In', href: '/check-in', icon: Heart, section: 'core' },
   { name: 'My Sessions', href: '/sessions', icon: Calendar, section: 'core' },
   { name: 'Start Voice Session', href: '/session/new', icon: Mic, section: 'core' },
   { name: 'Start Chat Session', href: '/text-session/new', icon: MessageSquare, section: 'core' },

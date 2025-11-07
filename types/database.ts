@@ -62,6 +62,7 @@ export interface SessionSummary {
   key_topics: string[];
   next_steps: string[];
   mood_assessment?: string | null;
+  mood_score?: number | null;
   therapist_notes?: string | null;
   created_at: string;
 }
@@ -279,5 +280,166 @@ export interface CompleteSessionRequest {
 
 export interface CompleteSessionResponse {
   success: boolean;
+  error?: string;
+}
+
+// =============================================
+// JOURNAL & PROGRESS TRACKING TYPES
+// =============================================
+
+export type GoalStatus = 'active' | 'completed' | 'cancelled';
+export type MetricType = 'mood' | 'anxiety' | 'sleep' | 'energy' | 'stress';
+export type GoalType = 'journal_frequency' | 'session_frequency' | 'mood_average' | 'custom';
+export type MilestoneType = 'session_count' | 'journal_streak' | 'time_based' | 'mood_improvement';
+export type MoodTrend = 'improving' | 'declining' | 'stable' | 'insufficient_data';
+
+export interface JournalEntry {
+  id: string;
+  user_id: string;
+  session_id?: string | null;
+  title?: string | null;
+  content: string;
+  mood_score?: number | null;
+  tags: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProgressMetric {
+  id: string;
+  user_id: string;
+  metric_type: string;
+  value: number;
+  notes?: string | null;
+  recorded_at: string;
+}
+
+export interface UserGoal {
+  id: string;
+  user_id: string;
+  goal_type: string;
+  title: string;
+  description?: string | null;
+  target_value: number;
+  current_value: number;
+  start_date: string;
+  end_date: string;
+  status: GoalStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserMilestone {
+  id: string;
+  user_id: string;
+  milestone_type: string;
+  title: string;
+  description?: string | null;
+  value?: number | null;
+  achieved_at: string;
+  is_acknowledged: boolean;
+  created_at: string;
+}
+
+// Insert types
+export type JournalEntryInsert = Omit<JournalEntry, 'id' | 'created_at' | 'updated_at'> & {
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type ProgressMetricInsert = Omit<ProgressMetric, 'id' | 'recorded_at'> & {
+  id?: string;
+  recorded_at?: string;
+};
+
+export type UserGoalInsert = Omit<UserGoal, 'id' | 'created_at' | 'updated_at'> & {
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type UserMilestoneInsert = Omit<UserMilestone, 'id' | 'achieved_at' | 'created_at'> & {
+  id?: string;
+  achieved_at?: string;
+  created_at?: string;
+};
+
+// Update types
+export type JournalEntryUpdate = Partial<Omit<JournalEntry, 'id' | 'user_id' | 'created_at'>>;
+export type UserGoalUpdate = Partial<Omit<UserGoal, 'id' | 'user_id' | 'created_at'>>;
+
+// API types
+export interface CreateJournalEntryRequest {
+  sessionId?: string;
+  title?: string;
+  content: string;
+  moodScore?: number;
+  tags?: string[];
+}
+
+export interface UpdateJournalEntryRequest {
+  title?: string;
+  content?: string;
+  moodScore?: number;
+  tags?: string[];
+}
+
+export interface JournalEntryResponse {
+  success: boolean;
+  entry?: JournalEntry;
+  error?: string;
+}
+
+export interface JournalEntriesResponse {
+  success: boolean;
+  entries?: JournalEntry[];
+  total?: number;
+  error?: string;
+}
+
+export interface MoodStats {
+  avgMood: number | null;
+  minMood: number | null;
+  maxMood: number | null;
+  totalEntries: number;
+  moodTrend: MoodTrend;
+}
+
+export interface ProgressStats {
+  moodStats: MoodStats;
+  sessionStats: {
+    totalSessions: number;
+    completedSessions: number;
+    avgDuration: number;
+    sessionsThisWeek: number;
+    sessionsThisMonth: number;
+    topTopics: Array<{ topic: string; count: number }>;
+  };
+  journalStats: {
+    totalEntries: number;
+    currentStreak: number;
+    longestStreak: number;
+    entriesThisWeek: number;
+    entriesThisMonth: number;
+    avgMoodScore: number | null;
+  };
+}
+
+export interface ProgressStatsResponse {
+  success: boolean;
+  stats?: ProgressStats;
+  error?: string;
+}
+
+export interface JournalStreakResponse {
+  success: boolean;
+  currentStreak?: number;
+  error?: string;
+}
+
+export interface AIPromptResponse {
+  success: boolean;
+  prompts?: string[];
   error?: string;
 }
